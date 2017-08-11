@@ -19,7 +19,7 @@ import com.model2.mvc.common.Search;
 import com.model2.mvc.service.domain.Product;
 import com.model2.mvc.service.product.ProductService;
 
-//==> È¸¿ø°ü¸® Controller
+//==> È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Controller
 @Controller
 @RequestMapping("/product/*")
 public class ProductController {
@@ -28,15 +28,15 @@ public class ProductController {
 	@Autowired
 	@Qualifier("productServiceImpl")
 	private ProductService productService;
-	// setter Method ±¸Çö ¾ÊÀ½
+	// setter Method ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 	public ProductController() {
 		System.out.println(this.getClass());
 	}
 
 	// ==> classpath:config/common.properties ,
-	// classpath:config/commonservice.xml ÂüÁ¶ ÇÒ°Í
-	// ==> ¾Æ·¡ÀÇ µÎ°³¸¦ ÁÖ¼®À» Ç®¾î ÀÇ¹Ì¸¦ È®ÀÎ ÇÒ°Í
+	// classpath:config/commonservice.xml ï¿½ï¿½ï¿½ï¿½ ï¿½Ò°ï¿½
+	// ==> ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½Î°ï¿½ï¿½ï¿½ ï¿½Ö¼ï¿½ï¿½ï¿½ Ç®ï¿½ï¿½ ï¿½Ç¹Ì¸ï¿½ È®ï¿½ï¿½ ï¿½Ò°ï¿½
 	@Value("#{commonProperties['pageUnit']}")
 	// @Value("#{commonProperties['pageUnit'] ?: 3}")
 	int pageUnit;
@@ -45,95 +45,7 @@ public class ProductController {
 	// @Value("#{commonProperties['pageSize'] ?: 2}")
 	int pageSize;
 
-	//@Test
-	/*@RequestMapping("/addProduct")
-	public ModelAndView addProduct(@ModelAttribute("product") Product product) throws Exception {
-
-		System.out.println("/addProduct");
-
-		product.setManuDate(product.getManuDate().replaceAll("-", ""));
-
-		productService.addProduct(product);
-
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("product", product);
-		modelAndView.setViewName("forward:/product/addProduct.jsp");
-
-		return modelAndView;
-	}*/
 	
-	/*@RequestMapping("addProduct")
-	public ModelAndView addProduct(@ModelAttribute("product") Product product,
-									HttpServletRequest request)
-			throws Exception {
-
-
-		System.out.println("/addProduct");
-
-		ModelAndView modelAndView = new ModelAndView();
-
-		if (FileUpload.isMultipartContent(request)) {
-			String temDir = "/Users/sungkyoung-kim/git/07.Model2MVCShop(URI,pattern)/"
-					+ "07.Model2MVCShop(URI,pattern)/WebContent/images/uploadFiles";
-
-			DiskFileUpload fileUpload = new DiskFileUpload();
-			fileUpload.setRepositoryPath(temDir);
-			fileUpload.setSizeMax(1024 * 1024 * 10);
-
-			fileUpload.setSizeThreshold(1024 * 100);
-
-			if (request.getContentLength() < fileUpload.getSizeMax()) {
-				StringTokenizer token = null;
-				List fileItemList = fileUpload.parseRequest(request);
-				int Size = fileItemList.size();
-				for (int i = 0; i < Size; i++) {
-					FileItem fileItem = (FileItem) fileItemList.get(i);
-					if (fileItem.isFormField()) {
-						if (fileItem.getFieldName().equals("manuDate")) {
-							token = new StringTokenizer(fileItem.getString("euc-kr"), "-");
-							String manuDate = token.nextToken() + token.nextToken() + token.nextToken();
-							product.setManuDate(manuDate);
-						} else if (fileItem.getFieldName().equals("prodName"))
-							product.setProdName(fileItem.getString("euc-kr"));
-						else if (fileItem.getFieldName().equals("prodDetail"))
-							product.setProdDetail(fileItem.getString("euc-kr"));
-						else if (fileItem.getFieldName().equals("price"))
-							product.setPrice(Integer.parseInt(fileItem.getString("euc-kr")));
-
-					} else {
-						if (fileItem.getSize() > 0) {
-							int idx = fileItem.getName().lastIndexOf("\\");
-							if (idx == -1) {
-								idx = fileItem.getName().lastIndexOf("/");
-
-							}
-							String fileName = fileItem.getName().substring(idx + 1);
-							product.setFileName(fileName);
-							try {
-								File UploadedFile = new File(temDir, fileName);
-								fileItem.write(UploadedFile);
-							} catch (IOException e) {
-								System.out.println(e);
-							}
-						}
-					}
-				}
-				productService.addProduct(product);
-				modelAndView.addObject("product", product);
-				modelAndView.setViewName("forward:/product/addProduct.jsp");
-			} else {
-				int overSize = (request.getContentLength() / 1000000);
-				System.out.println("<script>alert('ÆÄÀÏÀÇ Å©±â´Â 1MB ±îÁöÀÔ´Ï´Ù. ¿Ã¸®½Å ÆÄÀÏ¿ë·®Àº " + overSize + "MBÀÔ´Ï´Ù');");
-
-			}
-		} else {
-			System.out.println("ÀÎÄÚµù Å¸ÀÔÀÌ multipart/form-data°¡ ¾Æ´Õ´Ï´Ù.");
-		}
-		modelAndView.setViewName("forward:/product/addProduct.jsp");
-
-		return modelAndView;
-	}
-*/
 	@RequestMapping(value = "addProduct", method = RequestMethod.POST)
 	public ModelAndView addProduct(@ModelAttribute("product") Product product, 
 									@RequestParam("file") MultipartFile file)
@@ -148,8 +60,7 @@ public class ProductController {
 		
 		product.setManuDate(product.getManuDate().replaceAll("-", ""));
 		
-		String temDir = "/Users/sungkyoung-kim/git/07.Model2MVCShop(URI,pattern)/"
-				+ "07.Model2MVCShop(URI,pattern)/WebContent/images/uploadFiles";
+		String temDir ="/Users/sungkyoung-kim/git/09.Model2MVCShop(jQuery)/09.Model2MVCShop(jQuery)/WebContent/images/uploadFiles";
 		
 		File UploadedFile = new File(temDir, file.getOriginalFilename());
 		
