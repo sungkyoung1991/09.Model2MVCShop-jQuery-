@@ -1,7 +1,10 @@
 <%@ page contentType="text/html; charset=euc-kr" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-	
+
+
+
+
 	<c:if test="${ resultPage.currentPage <= resultPage.pageUnit }">
 			◀ 이전
 	</c:if>
@@ -19,3 +22,6 @@
 	<c:if test="${ resultPage.endUnitPage < resultPage.maxPage }">
 			<a href="javascript:fncGetList('${resultPage.endUnitPage+1}')">이후 ▶</a>
 	</c:if>
+
+	
+	

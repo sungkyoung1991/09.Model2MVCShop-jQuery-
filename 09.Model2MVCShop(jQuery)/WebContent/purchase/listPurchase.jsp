@@ -8,11 +8,36 @@
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
+
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script type="text/javascript">
-	function fncGetList(currentPage) { // user > purchase 로 변경
-		document.getElementById("currentPage").value = currentPage;
-		document.detailForm.submit();
-	}
+
+	
+	 function fncGetList(currentPage) {
+		$("#currentPage").val(currentPage)
+		$("form").attr("method" , "POST").attr("action" , "/purchase/listPurchase").submit();
+	} 
+	
+	$(function(){
+	 	 $(".ct_list_pop:contains('정보수정하기')").on("click",function(){
+	 		/*  self.location="/purchase/getPurchase?tranNo="+$("p"[0],this).text().trim()+"&prodNo="+$("p"[1],this).text().trim(); */
+	 		  self.location="/purchase/getPurchase?tranNo="+$("p"[0],this).text().trim()+"&prodNo="
+	 				  +$("span",this).text().trim();
+	 		console.log("수정찌금"+ $(this).html());
+	 	 });
+	});
+	
+	$(function(){
+	 	 $(".ct_list_pop:contains('상품수령')").on("click",function(){
+				self.location="/purchase/updateTranCode?tranNo="
+					+$($("p")[0],this).text().trim()+"&prodNo="+$($("p",this)[1]).text().trim()+"&tranCode="+$($("p",this)[2]).text().trim()+
+						"&menu=${param.menu}";
+	 	 });
+	});
+	
+	 		 
+	 		 
+
 </script>
 </head>
 
@@ -20,7 +45,7 @@
 
 <div style="width: 98%; margin-left: 10px;">
 
-<form name="detailForm" action="/purchase/listPurchase" method="post">
+<form name="detailForm">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -70,7 +95,7 @@
 	
 	
 	<tr class="ct_list_pop">
-		<td align="center">${purchase.purchaseProd.prodNo}</td>
+		<td align="center" id="prodNo">${purchase.purchaseProd.prodNo}</td>
 		<td align="left"></td>
 		<td>${purchase.purchaseProd.prodName }</td>
 		<td align="left"></td>
@@ -90,13 +115,15 @@
 		<c:if test="${purchase.tranCode=='3  '}">
 		배송완료
 		</c:if>
-		
-		
-		
 		</td>
 		<td align="left"><td align="left">
 		<c:if test="${purchase.tranCode=='1  '}">
-		<a href="/purchase/getPurchase?tranNo=${purchase.tranNo}&prodNo=${purchase.purchaseProd.prodNo}">정보수정하기</a></td>
+		<div style="display:none">
+		<p>${purchase.tranNo }</p>
+		<span>${purchase.purchaseProd.prodNo }</span>
+		</div>
+		정보수정하기
+		</td>
 		</c:if>
 		<c:if test="${purchase.tranCode!='1  '}">
 		수정불가.
@@ -110,7 +137,13 @@
  			대기
 		</c:if>
 		<c:if test="${purchase.tranCode=='2  '}">
-<a href="/purchase/updateTranCode?tranNo=${purchase.tranNo}&prodNo=${purchase.purchaseProd.prodNo}&tranCode=${purchase.tranCode}&menu=${param.menu}"> 상품수령 </a></td>
+		<div style="display:none">
+		<p>${purchase.tranNo }</p>
+		<p>${purchase.purchaseProd.prodNo }</p>
+		<p>${purchase.tranCode }</p>
+		</div>
+			상품수령
+		</td>
 		</c:if>
 		<c:if test="${purchase.tranCode=='3  '}">
 		상품수령완료

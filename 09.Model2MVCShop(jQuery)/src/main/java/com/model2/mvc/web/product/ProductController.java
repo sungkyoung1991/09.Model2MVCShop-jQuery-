@@ -35,8 +35,6 @@ public class ProductController {
 	}
 
 	// ==> classpath:config/common.properties ,
-	// classpath:config/commonservice.xml ���� �Ұ�
-	// ==> �Ʒ��� �ΰ��� �ּ��� Ǯ�� �ǹ̸� Ȯ�� �Ұ�
 	@Value("#{commonProperties['pageUnit']}")
 	// @Value("#{commonProperties['pageUnit'] ?: 3}")
 	int pageUnit;
@@ -51,42 +49,34 @@ public class ProductController {
 									@RequestParam("file") MultipartFile file)
 			throws Exception {
 
-
 		System.out.println("/addProduct");
-		
-		System.out.println("file check ........" + file.getOriginalFilename());
-		
-		System.out.println("product..........." + product);
-		
+	
+		if(file.getSize()>0){
 		product.setManuDate(product.getManuDate().replaceAll("-", ""));
-		
 		String temDir ="/Users/sungkyoung-kim/git/09.Model2MVCShop(jQuery)/09.Model2MVCShop(jQuery)/WebContent/images/uploadFiles";
-		
 		File UploadedFile = new File(temDir, file.getOriginalFilename());
-		
-		System.out.println("uploadFile :  " + UploadedFile);
-		
 		product.setFileName(file.getOriginalFilename());
-		
 		file.transferTo(UploadedFile);
-		
-		System.out.println("filename check..........."+product.getFileName());
-
 		ModelAndView modelAndView = new ModelAndView();
 		productService.addProduct(product);
 		modelAndView.setViewName("forward:/product/addProduct.jsp");
 		modelAndView.addObject(product);
-		
 		return modelAndView;
-
+		}else{
+			product.setManuDate(product.getManuDate().replaceAll("-", ""));
+			ModelAndView modelAndView = new ModelAndView();
+			productService.addProduct(product);
+			modelAndView.setViewName("forward:/product/addProduct.jsp");
+			modelAndView.addObject(product);
+			return modelAndView;
+			
+		}
 		
 	}
-
 	
-	
-
 	@RequestMapping("getProduct")
-	public ModelAndView getProduct(@RequestParam("menu") String menu, @RequestParam("prodNo") int prodNo)
+	public ModelAndView getProduct(@RequestParam("menu") String menu, 
+			@RequestParam("prodNo") int prodNo)
 			throws Exception {
 
 		System.out.println("/getProduct");
@@ -172,7 +162,5 @@ public class ProductController {
 		modelAndView.setViewName("forward:/product/listProduct.jsp");
 
 		return modelAndView;
-
 	}
-
 }

@@ -4,17 +4,42 @@
 
 <html>
 <head>
+	
 <title></title>
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script type="text/javascript">
-	// 검색 / page 두가지 경우 모두 Form 전송을 위해 JavaScrpt 이용  
+	
 	function fncGetList(currentPage) {
-		document.getElementById("currentPage").value = currentPage;
-	   	document.detailForm.submit();		
-	} 
-
+		$("#currentPage").val(currentPage)
+		$("form").attr("method" , "POST").attr("action" , "/product/listProduct?menu=${param.menu}").submit();
+	}
+	 $(function(){
+			 $( ".ct_btn01:contains('검색')" ).on("click" , function() {
+				fncGetList(1);
+			});
+	 });
+	 
+	 
+	 
+	    $(function(){
+		 	 	$(".ct_list_pop td:nth-child(2)").on("click",function(){
+		 			 	 self.location="/product/getProduct?prodNo="+$("p",this).text().trim()+"&menu=${param.menu}"; 
+		 	 		/* self.location="/product/getProduct?prodNo="+$("div p").text().trim()+"&menu=${param.menu}"; */
+			}); 
+		 });
+	 
+	    
+	    
+	 $(function(){
+	 	 $(".ct_list_pop:contains('상품배송하기')").on("click",function(){
+	 		 self.location="/purchase/updateTranCode"+$('#tran',this).text().trim();
+		}); 
+	 });
+	 
+	     
 </script>
 </head>
 
@@ -23,11 +48,7 @@
 
 <div style="width:98%; margin-left:10px;">
 
-<form name="detailForm" action="/product/listProduct?menu=${param.menu}" method="post">
-
-
-
-
+<form name="detailForm">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -79,7 +100,7 @@
 						<img src="/images/ct_btnbg01.gif" width="17" height="23">
 					</td>
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top:3px;">
-						<a href="javascript:fncGetList('1');">검색</a> 
+						검색
 					</td>
 					<td width="14" height="23">
 						<img src="/images/ct_btnbg03.gif" width="14" height="23">
@@ -94,13 +115,11 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
 	<tr>
 		<td colspan="11" >전체 ${ resultPage.totalCount } 건수, 현재 ${resultPage.currentPage } 페이지</td>
-		
-		
 	</tr>
 	<tr>
 		<td class="ct_list_b" width="100">No</td>
-		<td class="ct_line02"></td>
-		<td class="ct_list_b" width="150">상품명</td>
+		<td class="ct_list_b" width="100">상품명</td>
+		<td class="ct_list_b"></td>
 		<td class="ct_line02"></td>
 		<td class="ct_list_b" width="150">가격</td>
 		<td class="ct_line02"></td>
@@ -116,24 +135,29 @@
 	<tr>
 		<td colspan="11" bgcolor="808285" height="1"></td>
 	</tr>
-
 	
 	<c:set var="i" value="0" />
 	<c:forEach var="product" items="${list }">
 		<c:set var="i" value="${i+1 }"/>
 	
-	
 	<tr class="ct_list_pop">
 		<td align="center">${ i }</td>
-		<td></td>
-		<td align="left">
+		<td>
 		<c:if test="${product.proTranCode==null}">	
-		<a href="/product/getProduct?prodNo=${product.prodNo}&menu=${param.menu}">${product.prodName}</a>
-		</c:if>		
-		<c:if test="${product.proTranCode!=null}">	
-		${product.prodName}
+			<div id = "prodNo" style="display:none">
+				<p>${product.prodNo }</p>
+			</div>
+				<span>${product.prodName }</span>
 		</c:if>
-		</td>				
+				
+		<c:if test="${product.proTranCode!=null}">	
+		<%-- 	<div style="display:none">
+				${product.prodName}
+			</div> --%>
+			<input readonly="readonly" value="판매종료"/>
+		</c:if>
+		</td>
+		<td align="left"></td>				
 		<td></td>
 		<td align="left">${product.price }</td>
 		<td></td>
@@ -162,7 +186,10 @@
 		
 		<c:if test="${product.proTranCode=='1  '}">
 			<c:if test="${param.menu=='manage' }">
-		<a href="/purchase/updateTranCode?prodNo=${product.prodNo}&menu=${param.menu}&tranCode=${product.proTranCode}">상품배송하기</a>
+			<div id="tran" style="display:none">
+			?prodNo=${product.prodNo}&menu=${param.menu}&tranCode=${product.proTranCode}
+			</div>
+			상품배송하기
 			</c:if>
 		</c:if>
 		
@@ -177,11 +204,6 @@
 		user 수령완료
 			</c:if>
 		</c:if>
-		
-		
-
-		
-		
 		</td>
 		
 		<td align="left">

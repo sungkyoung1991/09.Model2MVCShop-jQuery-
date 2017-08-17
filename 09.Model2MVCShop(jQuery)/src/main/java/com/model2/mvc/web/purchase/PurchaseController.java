@@ -26,7 +26,7 @@ import com.model2.mvc.service.purchase.PurchaseService;
 import com.model2.mvc.service.purchase.impl.PurchaseServiceImpl;
 import com.model2.mvc.service.user.UserService;
 
-//==> È¸¿ø°ü¸® Controller
+//==> È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Controller
 @Controller
 @RequestMapping("/purchase/*")
 public class PurchaseController {
@@ -39,7 +39,7 @@ public class PurchaseController {
 	@Autowired
 	@Qualifier("productServiceImpl")
 	private ProductService productService;
-	// setter Method ±¸Çö ¾ÊÀ½
+	// setter Method ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 	@Autowired
 	@Qualifier("userServiceImpl")
@@ -50,8 +50,8 @@ public class PurchaseController {
 	}
 
 	// ==> classpath:config/common.properties ,
-	// classpath:config/commonservice.xml ÂüÁ¶ ÇÒ°Í
-	// ==> ¾Æ·¡ÀÇ µÎ°³¸¦ ÁÖ¼®À» Ç®¾î ÀÇ¹Ì¸¦ È®ÀÎ ÇÒ°Í
+	// classpath:config/commonservice.xml ï¿½ï¿½ï¿½ï¿½ ï¿½Ò°ï¿½
+	// ==> ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½Î°ï¿½ï¿½ï¿½ ï¿½Ö¼ï¿½ï¿½ï¿½ Ç®ï¿½ï¿½ ï¿½Ç¹Ì¸ï¿½ È®ï¿½ï¿½ ï¿½Ò°ï¿½
 	// @Value("#{commonProperties['pageUnit']}")
 	@Value("#{commonProperties['pageUnit'] ?: 3}")
 	int pageUnit;
@@ -100,16 +100,18 @@ public class PurchaseController {
 	}
 
 	@RequestMapping("getPurchase")
-	public String getPurchase(@RequestParam("tranNo") int tranNo, // @RequestParam("prodNo")
-																	// int
-																	// prodNo,
-			// @RequestParam("menu") String menu,
+	public String getPurchase(@RequestParam("tranNo") int tranNo,  @RequestParam("prodNo") int prodNo,
 			Model model) throws Exception {
 
 		System.out.println("getPurchase");
-
+		
+		
+		Product product = productService.getProduct(prodNo);
 		Purchase purchase = purchaseService.getPurchase(tranNo);
-
+	
+		
+		purchase.setPurchaseProd(product);
+		
 		System.out.println("Controller Purchase Check : " + purchase);
 		model.addAttribute("purchase", purchase);
 
@@ -125,7 +127,7 @@ public class PurchaseController {
 		Purchase purchase = purchaseService.getPurchase(tranNo);
 
 		model.addAttribute("purchase", purchase);
-
+		
 		return "forward:/purchase/updatePurchaseView.jsp";
 	}
 

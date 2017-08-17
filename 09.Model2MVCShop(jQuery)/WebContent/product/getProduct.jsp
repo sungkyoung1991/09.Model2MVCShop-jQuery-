@@ -6,13 +6,35 @@
 <head>
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script type="text/javascript">
 
+	function fncAddpurchase(){
+		$('form').attr("method","post").attr("enctype","multipart/form-data").attr("action","/purchase/addPurchaseView?prodNo=${product.prodNo }").submit();
+	}
+
+		$(function(){
+			$(".ct_btn01:contains('구매')").on("click",function(){
+				/* self.location="/purchase/addPurchaseView?prodNo=${product.prodNo }"; */
+				fncAddpurchase();
+			});
+		});
+		
+		$(function(){
+			$(".ct_btn01:contains('확인')").on("click",function(){
+				self.location="/product/listProduct?menu=${param.menu}";
+			});
+		});
+
+
+
+</script>
 <title>Insert title here</title>
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
 
-	<form name="detailForm" method="post" enctype = "multipart/form-data">
+	<form name="detailForm">
 
 		<table width="100%" height="37" border="0" cellpadding="0"
 			cellspacing="0">
@@ -127,15 +149,18 @@
 								width="17" height="23" /></td>
 
 							<td background="/images/ct_btnbg02.gif" class="ct_btn01"
-								style="padding-top: 3px;"><a
-								href="/purchase/addPurchaseView?prodNo=${product.prodNo }">구매</a></td>
-								<!-- <input type="submit" name="submit" value="구매"/> -->
+								style="padding-top: 3px;">
+								<%-- <ahref="/purchase/addPurchaseView?prodNo=${product.prodNo }">구매</a> --%>
+								구매
+								</td>
 								
 							<td width="14" height="23"><img src="/images/ct_btnbg03.gif"
 								width="14" height="23" />
 							<td background="/images/ct_btnbg02.gif" class="ct_btn01"
-								style="padding-top: 3px;"><a
-								href="/product/listProduct?menu=${param.menu}">확인</a></td>
+								style="padding-top: 3px;">
+								<%-- <a href="/product/listProduct?menu=${param.menu}">확인</a> --%>
+								확인
+								</td>
 							<td width="14" height="23"><img src="/images/ct_btnbg03.gif"
 								width="14" height="23" /></td>
 						</tr>

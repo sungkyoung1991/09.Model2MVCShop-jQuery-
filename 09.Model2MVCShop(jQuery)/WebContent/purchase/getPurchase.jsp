@@ -10,7 +10,30 @@
 <title>구매상세조회</title>
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
-
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+	 	 $(".ct_list_pop p[1]").on("click",function(){
+	 		 self.location="/product/getProduct?prodNo="+$("p"[0],this).text().trim();
+	 	 });
+	});
+	
+	
+	$(function(){
+		$(".ct_btn:contains('확인')").on("click",function(){
+			history.go(-1);
+		});
+	});
+	
+	$(function(){
+		$(".ct_btn01:contains('수정')").on("click",function(){
+			self.location="/purchase/updatePurchaseView?prodNo="+$("p"[0],this).text().trim()+"&trano="+$("p"[1],this).text().trim();
+		});
+	});
+		
+		
+		
+			</script>		
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
@@ -61,7 +84,13 @@
 		<td width="104" class="ct_write">상품명</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<a href="/product/getProduct?prodNo="${product.prodNo }">${product.prodName }</a>
+		
+		
+		<div style = "diplay:none">
+		<p>${product.prodNo }</p>
+		</div>
+			<%-- <a href="/product/getProduct?prodNo="${product.prodNo }">${product.prodName }</a> --%>
+			${purchase.purchaseProd.prodName }
 		</td>
 	</tr>
 	
@@ -167,10 +196,16 @@
 						<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
 					</td>
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01"	style="padding-top: 3px;">
-						<a href="javascript:history.go(-1);">확인</a>
+						<!-- <a href="javascript:history.go(-1);">확인</a> -->
+						확인
 					</td>
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01"	style="padding-top: 3px;">
-					<a href="/purchase/updatePurchaseView?prodNo=${product.prodNo}&tranNo=${purchase.tranNo}">수정</a>
+					<div style="display:none">
+					<p>${product.prodNo }</p>
+					<p>${purchase.tranNo }</p>
+					</div>
+					<%-- <a href="/purchase/updatePurchaseView?prodNo=${product.prodNo}&tranNo=${purchase.tranNo}">수정</a> --%>
+					수정
 				</td>
 					<td width="14" height="23">
 						<img src="/images/ct_btnbg03.gif"width="14" height="23"/>
